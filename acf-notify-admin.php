@@ -9,7 +9,7 @@
  * Plugin Name:       Advanced Custom Fields: Notify Admin
  * Plugin URI:        http://Jupitercow.com/
  * Description:       Allows a form to notify the adminitstrator or a set list of email addresses when submitted.
- * Version:           1.1.0
+ * Version:           1.1.1
  * Author:            Jupitercow
  * Author URI:        http://Jupitercow.com/
  * Contributor:       Jake Snyder
@@ -64,8 +64,6 @@ class Acf_Notify_Admin
 	 */
 	public function run()
 	{
-		if (! $this->test_requirements() ) { return false; }
-
 		add_action( 'init',                   array($this, 'init') );
 	}
 
@@ -79,7 +77,7 @@ class Acf_Notify_Admin
 	public function test_requirements()
 	{
 		// Look for ACF
-		if (! class_exists('acf') ) { return false; }
+		if ( ! class_exists('acf') && ! class_exists('Acf') ) { return false; }
 		return true;
 	}
 
@@ -106,6 +104,8 @@ class Acf_Notify_Admin
 	 */
 	public function init()
 	{
+		if (! $this->test_requirements() ) { return false; }
+
 		// Add action to email the admin when a form has been submitted
 		add_action( 'acf/save_post', array($this, 'notify'), 999 );
 	}
